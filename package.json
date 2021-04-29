@@ -1,0 +1,21 @@
+{
+  "name": "employeetracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "employeetracker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node employeetracker.js",
+    "watch": "nodemon employeetracker.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/etown285/employeetracker.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/etown285/employeetracker/issues"
+  },
+  "homepage": "https://github.com/etown285/employeetracker#readme"
+}
