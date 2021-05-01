@@ -46,7 +46,23 @@ connection.connect((err) => {
         break;
 
       case 'Remove Role':
-        songSearch();
+        removeRole();
+        break;
+
+      case 'View Department':
+        viewDepartment();
+        break;
+
+      case 'View Roles':
+        viewRole();
+        break;
+
+      case 'Remove Role':
+        viewEmployees();
+        break;
+      
+      case 'Update Employee Role':
+        updateRole();
         break;
 
       case 'Exit':
@@ -75,7 +91,7 @@ function addDepartment() {
 }
 
 function addRole() {
-  // Prompt the User for the new NAME
+  // Prompt the User for the new role 
 
   inquirer.prompt({
       name: "roleid"
@@ -92,6 +108,7 @@ function addRole() {
       })
 }
 
+// function that adds a new employee 
 function addEmployee(){[
   inquirer.prompt({
       name: "firstName", 
@@ -105,7 +122,7 @@ function addEmployee(){[
       }
     }, 
 
-    name: "lastName", 
+      name: "lastName", 
       type: "input", 
       message: "What is the Employee's First Name?",
       validate: answer => {
@@ -114,9 +131,9 @@ function addEmployee(){[
       } else {
           return "At least one character is required.";
       }
-    },
+      },
     
-    name: "role", 
+      name: "role", 
       type: "list", 
       message: "What is the Employee's First Name?",
       validate: answer => {
@@ -125,10 +142,9 @@ function addEmployee(){[
       } else {
           return "At least one character is required.";
       }
-    }      
-  })
-
-]).then(function (answers) {
+      }      
+  })].then(function (answers) {
+  
   var roleId = selectRole().indexOf(answers.role) + 1
   connection.query("INSERT INTO employees SET ?", 
   {
@@ -142,5 +158,13 @@ function addEmployee(){[
       console.table(answers)
       runEmployeeDB()
   })
+  })
+}
 
-});
+function viewDepartment() {
+  connection.query("SELECT department.id AS ID, department.name AS department FROM department",
+  function(err,res) {
+    if (err) throw (err)
+  })
+}
+
