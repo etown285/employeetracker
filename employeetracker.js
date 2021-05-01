@@ -109,8 +109,8 @@ function addRole() {
 }
 
 // function that adds a new employee 
-function addEmployee(){[
-  inquirer.prompt({
+function addEmployee(){
+  inquirer.prompt([{
       name: "firstName", 
       type: "input", 
       message: "What is the Employee's First Name?",
@@ -120,30 +120,33 @@ function addEmployee(){[
       } else {
           return "At least one character is required.";
       }
-    }, 
-
+    }
+  }, 
+    {
       name: "lastName", 
       type: "input", 
-      message: "What is the Employee's First Name?",
+      message: "What is the Employee's Last Name?",
       validate: answer => {
       if (answer !== "") {
           return true;
       } else {
           return "At least one character is required.";
       }
-      },
+      }
+    },
     
-      name: "role", 
-      type: "list", 
-      message: "What is the Employee's First Name?",
-      validate: answer => {
-      if (answer !== "") {
-          return true;
-      } else {
-          return "At least one character is required.";
-      }
-      }      
-  })].then(function (answers) {
+      // name: "role", 
+      // type: "list", 
+      // message: "What is the Employee's Role?",
+      // validate: answer => {
+      // if (answer !== "") {
+      //     return true;
+      // } else {
+      //     return "At least one character is required.";
+      // }
+    // }      
+//  }
+]).then(function (answers) {
   
   var roleId = selectRole().indexOf(answers.role) + 1
   connection.query("INSERT INTO employees SET ?", 
