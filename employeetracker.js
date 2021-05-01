@@ -27,39 +27,34 @@ connection.connect((err) => {
         name: 'choices',
         type: 'list',
         message: 'What would you like to do?',
-        choices: ['Add a Department', 'View Departments']
+        choices: ['Add a Department', 'Add a Role', 'Add Employee', 'View Departments', 'View Roles', 'View Employees by Department', 'View Employee Roles' ]
     })
   
-    // .then((answer) => {
-    //     console.log(answer);
-    // switch (answer.choices) {
-    //   case 'Add a Department':
-    //     addDepartment();
-    //     break;
+    .then((answer) => {
+        console.log(answer);
+    switch (answer.choices) {
+      case 'Add a Department':
+        addDepartment();
+        break;
 
-    //   case 'Find all artists who appear more than once':
-    //     multiSearch();
-    //     break;
+      case 'Add Employee':
+        addEmployee();
+        break;
 
-    //   case 'Find data within a specific range':
-    //     rangeSearch();
-    //     break;
+      case 'Add a Role':
+        addRole();
+        break;
 
-    //   case 'Search for a specific song':
-    //     songSearch();
-    //     break;
+      case 'Remove Role':
+        songSearch();
+        break;
 
-    //   case 'Find artists with a top song and top album in the same year':
-    //     songAndAlbumSearch();
-    //     break;
-
-    //   default:
-    //     console.log(`Invalid action: ${answer.action}`);
-    //     break;
-    // }
+      case 'Exit':
+        connection.end();
+        break;
+     }
   });
 };
-
 
 function addDepartment() {
     // Prompt the User for the new NAME
@@ -78,3 +73,74 @@ function addDepartment() {
             connection.query(queryStr, newDepartment)
         })
 }
+
+function addRole() {
+  // Prompt the User for the new NAME
+
+  inquirer.prompt({
+      name: "roleid"
+  })
+      .then(result => {
+          console.log(result);
+
+
+          let newRole = {
+              name: result.roleId
+          }
+          let queryStr = 'INSERT INTO role (name) VALUES ?';
+          connection.query(queryStr, newRole)
+      })
+}
+
+function addEmployee(){[
+  inquirer.prompt({
+      name: "firstName", 
+      type: "input", 
+      message: "What is the Employee's First Name?",
+      validate: answer => {
+      if (answer !== "") {
+          return true;
+      } else {
+          return "At least one character is required.";
+      }
+    }, 
+
+    name: "lastName", 
+      type: "input", 
+      message: "What is the Employee's First Name?",
+      validate: answer => {
+      if (answer !== "") {
+          return true;
+      } else {
+          return "At least one character is required.";
+      }
+    },
+    
+    name: "role", 
+      type: "list", 
+      message: "What is the Employee's First Name?",
+      validate: answer => {
+      if (answer !== "") {
+          return true;
+      } else {
+          return "At least one character is required.";
+      }
+    }      
+  })
+
+]).then(function (answers) {
+  var roleId = selectRole().indexOf(answers.role) + 1
+  connection.query("INSERT INTO employees SET ?", 
+  {
+      firstName: answers.firstName,
+      lastName: answers.lastName,
+      roleID: roleId
+      
+  }, 
+  function(err){
+      if (err) throw err
+      console.table(answers)
+      runEmployeeDB()
+  })
+
+});
