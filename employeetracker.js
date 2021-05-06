@@ -22,6 +22,12 @@ connection.connect((err) => {
 
     //Direct the user what they want to search 
   const runSearch = () => {
+
+    // WE will request all the (departments or roles, employees) from DB 
+      // --> make a connection.query() call : save that return data into a variable (ARRAY data type)
+
+      // --> map() or forEach( function(item) {} ) loop through the data in the ARRAY variable (make that your CHOICES in inquirer.prompt)
+    // [ item.name ]
       inquirer
       .prompt({
         name: 'choices',
@@ -49,7 +55,7 @@ connection.connect((err) => {
         removeRole();
         break;
 
-      case 'View Department':
+      case 'View Departments':
         viewDepartment();
         break;
 
@@ -57,7 +63,7 @@ connection.connect((err) => {
         viewRole();
         break;
 
-      case 'Remove Role':
+      case 'View Employees':
         viewEmployees();
         break;
       
@@ -77,7 +83,7 @@ function addDepartment() {
 
     inquirer.prompt({
         name: "departmentName"
-    })
+        })
         .then(result => {
             console.log(result);
 
@@ -85,9 +91,27 @@ function addDepartment() {
             let newDepartment = {
                 name: result.departmentName
             }
-            let queryStr = 'INSERT INTO department (name) VALUES ?';
-            connection.query(queryStr, newDepartment)
+            let queryStr = 'INSERT INTO department SET ?';
+            connection.query(queryStr, newDepartment, function(error, result) {
+              if(error) {
+                console.log(error);
+              } else {
+                // console.log(result);
+
+                // display all departments (including the new one just added)
+                  // --> make a request to the DB 
+                  // --> call the viewDepartments() and save that into a variable 
+                viewDepartment();
+                  // --> console.table(DISPLAY_OBJECT)
+                // Return to the main menu 
+                // --> runSearch();
+              }
+
+            })
         })
+        .catch(function(error) {
+          console.log(error);
+        });
 }
 
 function addRole() {
@@ -135,17 +159,29 @@ function addEmployee(){
       }
     },
     
-      // name: "role", 
-      // type: "list", 
-      // message: "What is the Employee's Role?",
-      // validate: answer => {
-      // if (answer !== "") {
-      //     return true;
-      // } else {
-      //     return "At least one character is required.";
-      // }
-    // }      
-//  }
+    {
+      name: "role", 
+      type: "input", 
+      message: "What is the Employee's Role?",
+      validate: answer => {
+      if (answer !== "") {
+          return true;
+      } else {
+          return "At least one character is required.";
+      }
+    }
+    {
+      name: "Department", 
+      type: "input", 
+      message: "What department is the Employee in?",
+      validate: answer => {
+      if (answer !== "") {
+          return true;
+      } else {
+          return "At least one character is required.";
+      }
+    }
+  }      
 ]).then(function (answers) {
   
   var roleId = selectRole().indexOf(answers.role) + 1
@@ -165,6 +201,25 @@ function addEmployee(){
 }
 
 function viewDepartment() {
+  connection.query("SELECT name FROM department", function(err,res) {
+    if (err) throw (err);
+    // console.log(res)
+    console.table(res);
+
+    // call back to main question function
+    runSearch();
+  });
+
+}
+
+function viewRole() {
+  connection.query("SELECT department.id AS ID, department.name AS department FROM department",
+  function(err,res) {
+    if (err) throw (err)
+  })
+}
+
+function viewEmployees() {
   connection.query("SELECT department.id AS ID, department.name AS department FROM department",
   function(err,res) {
     if (err) throw (err)
