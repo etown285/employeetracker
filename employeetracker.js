@@ -33,7 +33,7 @@ connection.connect((err) => {
         name: 'choices',
         type: 'list',
         message: 'What would you like to do?',
-        choices: ['Add a Department', 'Add a Role', 'Add Employee', 'View Departments', 'View Roles', 'View Employees by Department', 'View Employee Roles' ]
+        choices: ['Add a Department', 'Add a Role', 'Add Employee', 'View Departments', 'View Roles', 'View Employees', 'Update Employee Role' ]
     })
   
     .then((answer) => {
@@ -217,19 +217,7 @@ function addEmployee(){
     }
     },
 
-    {
-      name: "manager", 
-      type: "input", 
-      message: "Who is the Employee's manager?",
-     /* validate: answer => {
-      if (answer !== "") {
-          return true;
-      } else {
-          return "At least one character is required.";
-      }
-    }
-    */
-  }      
+    
 ]).then(function (answers) {
   
  // var roleId = selectRole().indexOf(answers.role) + 1
@@ -278,4 +266,32 @@ function viewEmployees() {
     // call back to main question function
     runSearch();
   })
+}
+
+function updateRole() {
+  viewEmployees() 
+  inquirer.prompt([{
+  name: "role", 
+  type: "input", 
+  message: "What is the Employee's Role?",
+  validate: answer => {
+  if (answer !== "") {
+      return true;
+  } else {
+      return "At least one character is required.";
+    }
+  }
+  ]).then(function (answers) {
+  
+  // var roleId = selectRole().indexOf(answers.role) + 1
+   connection.query("INSERT INTO employee SET ?", 
+   {
+    role: answers.role,
+   }, 
+    function(err,res) {
+      if (err) throw (err)
+      console.table(res)
+      // call back to main question function
+      runSearch();
+    }
 }
