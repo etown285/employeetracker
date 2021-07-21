@@ -117,18 +117,63 @@ function addDepartment() {
 function addRole() {
   // Prompt the User for the new role 
 
-  inquirer.prompt({
-      name: "roleid"
-  })
+  inquirer.prompt([
+    {
+      name: "title",
+      type: "input",
+      message: "What is the title for this role?",
+      validate: answer => {
+        if (answer !== "") {
+            return true;
+        } else {
+            return "At least one character is required.";
+        }
+      }
+    },
+    {
+      name: "salary",
+      type: "input",
+      message: "What is the roles salary?",
+      validate: answer => {
+        if (answer !== "") {
+            return true;
+        } else {
+            return "Numeric needed with decimal.";
+        }
+      }
+    },
+    {
+      name: "department_id",
+      type: "input",
+      message: "What department is the employee in?",
+      validate: answer => {
+        if (answer !== "") {
+            return true;
+        } else {
+            return "At least one character is required.";
+        }
+      }
+    },
+  ])
       .then(result => {
           console.log(result);
 
 
           let newRole = {
-              name: result.roleId
-          }
-          let queryStr = 'INSERT INTO role (name) VALUES ?';
-          connection.query(queryStr, newRole)
+              title: result.title,
+              salary: result.salary,
+              department_id: result.department_id
+            }
+
+          let queryStr = 'INSERT INTO role SET ?';
+          connection.query(queryStr, newRole, function(error, data) {
+            if(error) {
+              console.log(error)
+            }
+
+            console.log(data);
+            viewRole();
+          })
       })
 }
 
@@ -170,32 +215,35 @@ function addEmployee(){
           return "At least one character is required.";
       }
     }
+    },
+
     {
-      name: "Department", 
+      name: "manager", 
       type: "input", 
-      message: "What department is the Employee in?",
-      validate: answer => {
+      message: "Who is the Employee's manager?",
+     /* validate: answer => {
       if (answer !== "") {
           return true;
       } else {
           return "At least one character is required.";
       }
     }
+    */
   }      
 ]).then(function (answers) {
   
-  var roleId = selectRole().indexOf(answers.role) + 1
-  connection.query("INSERT INTO employees SET ?", 
+ // var roleId = selectRole().indexOf(answers.role) + 1
+  connection.query("INSERT INTO employee SET ?", 
   {
-      firstName: answers.firstName,
-      lastName: answers.lastName,
-      roleID: roleId
-      
+      first_name: answers.firstName,
+      last_name: answers.lastName,
+      role_id: answers.role,
+      manager_id: answers.manager
   }, 
   function(err){
       if (err) throw err
-      console.table(answers)
-      runEmployeeDB()
+     // console.table(answers)
+      viewEmployees()
   })
   })
 }
@@ -213,16 +261,21 @@ function viewDepartment() {
 }
 
 function viewRole() {
-  connection.query("SELECT department.id AS ID, department.name AS department FROM department",
+  connection.query("SELECT role.id AS ID, role.title, role.salary, role.department_id AS role FROM role",
   function(err,res) {
-    if (err) throw (err)
+    if (err) throw (err);
+    console.table(res)
+    // call back to main question function
+    runSearch();
   })
 }
 
 function viewEmployees() {
-  connection.query("SELECT department.id AS ID, department.name AS department FROM department",
+  connection.query("SELECT employee.id AS ID, employee.first_name, employee.last_name, employee.manager_id AS employee FROM employee",
   function(err,res) {
     if (err) throw (err)
+    console.table(res)
+    // call back to main question function
+    runSearch();
   })
 }
-
