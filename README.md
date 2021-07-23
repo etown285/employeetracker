@@ -13,7 +13,7 @@ An application that allows business owneres to manage employees per departments 
 
 ## Usage
 
-![Screenshot]()
+![Screenshot](https://github.com/etown285/employeetracker/blob/main/assets/mysql%20.gif)
 
 ## Links
 
