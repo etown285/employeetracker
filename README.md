@@ -1,6 +1,5 @@
 # employeetracker
 
-
 ## Description 
 An application that allows business owneres to manage employees per departments roles so they can organizaing their businesses directory. 
 
@@ -9,7 +8,7 @@ An application that allows business owneres to manage employees per departments 
 * Allows user to add departments, roles, and employees. 
 * Allows user to view departments, roles, and employees. 
 * Allows user to update employee roles. 
-* Uses Node.js and MYSQL. 
+* Uses Node.js, MYSQL, and inquirer. 
 
 
 ## Usage
@@ -19,7 +18,7 @@ An application that allows business owneres to manage employees per departments 
 ## Links
 
 
-* GitHub Repository URL: (https://github.com/etown285/react-google-book-search)
+* GitHub Repository URL: (https://github.com/etown285/employeetracker)
 
 
 License

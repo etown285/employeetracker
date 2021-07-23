@@ -268,30 +268,30 @@ function viewEmployees() {
   })
 }
 
-function updateRole() {
-  viewEmployees() 
-  inquirer.prompt([{
-  name: "role", 
-  type: "input", 
-  message: "What is the Employee's Role?",
-  validate: answer => {
-  if (answer !== "") {
-      return true;
-  } else {
-      return "At least one character is required.";
-    }
-  }
-  ]).then(function (answers) {
+// function updateRole() {
+//   viewEmployees() 
+//   inquirer.prompt([{
+//   name: "role", 
+//   type: "input", 
+//   message: "What is the Employee's Role?",
+//   validate: answer => {
+//   if (answer !== "") {
+//       return true;
+//   } else {
+//       return "At least one character is required.";
+//     }
+//   }
+//   ]).then(function (answers) {
   
-  // var roleId = selectRole().indexOf(answers.role) + 1
-   connection.query("INSERT INTO employee SET ?", 
-   {
-    role: answers.role,
-   }, 
-    function(err,res) {
-      if (err) throw (err)
-      console.table(res)
-      // call back to main question function
-      runSearch();
-    }
-}
+//   // var roleId = selectRole().indexOf(answers.role) + 1
+//    connection.query("INSERT INTO employee SET ?", 
+//    {
+//     role: answers.role,
+//    }, 
+//     function(err,res) {
+//       if (err) throw (err)
+//       console.table(res)
+//       // call back to main question function
+//       runSearch();
+//     }
+// }
